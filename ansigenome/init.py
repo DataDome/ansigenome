@@ -93,6 +93,12 @@ class Init(object):
                                        self.config, self.role_name,
                                        self.options.galaxy_categories)
 
+            ag_path = os.path.join(create_folder_path, "ansigenome.yml")
+            if not os.path.exists(ag_path):
+                ag_meta_file = c.DEFAULT_AG_FILE
+                ag_meta_file = meta_file.replace("%role_name", self.role_name)
+                utils.string_to_file(self.paths['ansigenome'], ag_meta_file)
+
     def create_travis_config(self):
         """
         Create a travis test setup.
