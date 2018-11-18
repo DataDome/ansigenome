@@ -85,7 +85,7 @@ CONFIG_DEFAULTS = {
     "scm_user": "",
     "scm_repo_prefix": "",
     "options_readme_template": "",
-    "options_travis": True,
+    "options_travis": False,
     "options_quiet": False,
     "options_test_runner": "https://github.com/nickjj/rolespec",
     "default_format_gendoc": ALLOWED_GENDOC_FORMATS[0],
@@ -131,7 +131,7 @@ DEFAULT_AG_FILE = """---
 ansigenome_info:
   galaxy_id: ''
 
-  travis: True
+  travis: false
 
   synopsis: |
     %role_name described in a few paragraphs....
