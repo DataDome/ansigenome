@@ -124,6 +124,10 @@ galaxy_info:
         - jessie
   categories: [%categories]
 
+"""
+
+DEFAULT_AG_FILE = """---
+
 ansigenome_info:
   galaxy_id: ''
 
@@ -137,8 +141,8 @@ ansigenome_info:
 
   #custom: |
   #  Any custom output you want after the usage section...
-"""
 
+"""
 
 LOG_COLOR = {
     "ok": "green",
