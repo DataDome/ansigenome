@@ -371,9 +371,11 @@ class Scan(object):
         """
         if not os.path.exists(self.paths["meta"]):
             utils.create_meta_main(self.paths["meta"], self.config, role, "")
-            utils.string_to_file(self.paths['ansigenome'], c.DEFAULT_AG_FILE)
             self.report["state"]["ok_role"] += 1
             self.report["roles"][role]["state"] = "ok"
+
+        if not os.path.exists(self.paths["ansigenome"]):
+            utils.string_to_file(self.paths['ansigenome'], c.DEFAULT_AG_FILE)
 
         # swap values in place to use the config values
         swaps = [
