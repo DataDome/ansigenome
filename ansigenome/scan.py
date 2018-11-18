@@ -466,10 +466,7 @@ ansigenome_info:
 
         for key in keys:
             if key[0] not in nfile:
-                if key[0] == "ansigenome_info":
-                    # make sure ansigenome_info is always on the bottom
-                    nfile = nfile + "\n{0}".format(ansigenome_block)
-                else:
+                if key[0] != "ansigenome_info":
                     nfile = "\n{0}: {1}\n\n".format(key[0], key[1]) + nfile
 
         return nfile
