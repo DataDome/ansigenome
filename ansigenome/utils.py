@@ -321,11 +321,15 @@ def exit_if_no_roles(roles_count, roles_path):
         sys.exit()
 
 
-def roles_dict(path, repo_prefix="", repo_sub_dir=""):
+def roles_dict(path, repo_prefix="", repo_sub_dir="", skip_dirs=""):
     """
     Return a dict of role names and repo paths.
     """
     exit_if_path_not_found(path)
+
+    skip_list = [dir for dir in skip_dirs.strip().split(",") if dir.strip()]
+    if any("/%s/" % dir in path for dir in skip_list):
+        return {}
 
     aggregated_roles = {}
 
@@ -334,7 +338,7 @@ def roles_dict(path, repo_prefix="", repo_sub_dir=""):
     # First scan all directories
     for role in roles:
         for sub_role in roles_dict(path + "/" + role, repo_prefix="",
-                                   repo_sub_dir=role + "/"):
+                                   repo_sub_dir=role + "/", skip_dirs=skip_dirs):
             aggregated_roles[role + "/" + sub_role] = role + "/" + sub_role
 
     # Then format them
@@ -344,6 +348,10 @@ def roles_dict(path, repo_prefix="", repo_sub_dir=""):
                 role_repo = "{0}{1}".format(repo_prefix, role_name(role))
 
                 aggregated_roles[role] = role_repo
+
+    for skip in skip_list:
+        if skip in aggregated_roles:
+            del aggregated_roles[skip]
 
     return aggregated_roles
 

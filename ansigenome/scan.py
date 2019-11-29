@@ -28,7 +28,8 @@ class Scan(object):
         # set the readme output format
         self.readme_format = c.ALLOWED_GENDOC_FORMATS[0]
 
-        self.roles = utils.roles_dict(self.roles_path, "")
+        skip_dirs = self.config.get("options_skip_roles_dirs", "")
+        self.roles = utils.roles_dict(self.roles_path, repo_prefix="", skip_dirs=skip_dirs)
 
         if self.options.limit:
             self.limit_roles()

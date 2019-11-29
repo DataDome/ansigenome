@@ -22,7 +22,8 @@ class Run(object):
         """
         stderr = ""
         role_count = 0
-        for role in utils.roles_dict(self.roles_path):
+        skip_dirs = self.config.get("options_skip_roles_dirs", "")
+        for role in utils.roles_dict(self.roles_path, skip_dirs=skip_dirs):
             self.command = self.command.replace("%role_name", role)
             (_, err) = utils.capture_shell("cd {0} && {1}".
                                            format(os.path.join(
