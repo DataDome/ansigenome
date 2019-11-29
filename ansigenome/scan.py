@@ -415,7 +415,8 @@ class Scan(object):
             self.report["state"]["ok_role"] += 1
             self.report["roles"][role]["state"] = "ok"
 
-        if not os.path.exists(self.paths["ansigenome"]):
+        if not os.path.exists(self.paths["ansigenome"]) and \
+           self.config.get("options_enforce_ansigenome_meta", True):
             ag_meta_file = c.DEFAULT_AG_FILE
             ag_meta_file = ag_meta_file.replace("%role_name", role)
             utils.string_to_file(self.paths['ansigenome'], ag_meta_file)
