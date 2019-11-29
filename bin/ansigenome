@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import absolute_import, division, print_function
 
 import os
 import sys
@@ -283,7 +284,7 @@ def merge_missing_config_keys(config, missing_keys, path):
     """
     ui.warn(c.MESSAGES["config_upgraded"])
     ui.ok(missing_keys)
-    print
+    print()
 
     config = utils.yaml_load(path)
 

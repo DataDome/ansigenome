@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function
+
 import os
 import unittest
 
@@ -51,10 +53,10 @@ class TestInit(unittest.TestCase):
 
         meta = utils.file_to_string(meta_path)
 
-        print
-        print "Meta file:"
-        print meta
-        print
+        print()
+        print("Meta file:")
+        print(meta)
+        print()
         self.assertIn("Test User", meta)
         self.assertIn("1 sentence", meta)
         self.assertIn(role_name, meta)

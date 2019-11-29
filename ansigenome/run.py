@@ -1,8 +1,10 @@
+from __future__ import absolute_import, division, print_function
+
 import os
 
-import constants as c
-import ui as ui
-import utils as utils
+from . import constants as c
+from . import ui as ui
+from . import utils as utils
 
 
 class Run(object):

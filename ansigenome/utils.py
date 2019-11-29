@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import, division, print_function
 
 import codecs
 import errno
@@ -6,21 +7,26 @@ import json
 import os
 import re
 import subprocess
-import urllib2
 import yaml
 #  import collections
+
+from six.moves.urllib import request as urllib2
+from six.moves import input
+from six import string_types
 
 from jinja2 import DictLoader
 from jinja2.environment import Environment
 
 import glob
 
-import constants as c
-import ui as ui
+from . import constants as c
+from . import ui as ui
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf-8')
+import six
+if six.PY2:
+    reload(sys)
+    sys.setdefaultencoding('utf-8')
 
 
 class RelEnvironment(Environment):
@@ -66,8 +72,12 @@ def file_to_string(path):
         ui.error(c.MESSAGES["path_missing"], path)
         sys.exit(1)
 
-    with codecs.open(path, "r", "UTF-8") as contents:
-        return contents.read()
+    try:
+        with codecs.open(path, "r", "UTF-8") as contents:
+            return contents.read()
+    except UnicodeDecodeError:
+        ui.error("invalid unicode", path)
+        sys.exit(1)
 
 
 def file_to_list(path):
@@ -196,12 +206,12 @@ def exit_if_path_not_found(path):
 
 
 def ask(question, default):
-    result = raw_input("{0} [{1}]: ".format(question, default))
+    result = input("{0} [{1}]: ".format(question, default))
 
     if not result:
         result = default
 
-    return result
+    return result.strip()
 
 # ------------------------------------------------------------------------
 # yaml
@@ -249,8 +259,8 @@ def capture_shell(command):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             shell=True)
-
-    return proc.communicate()
+    (out, err) = proc.communicate()
+    return six.ensure_text(out), six.ensure_text(err)
 
 # ------------------------------------------------------------------------
 # general
@@ -261,7 +271,7 @@ def keys_in_dict(d, parent_key, keys):
     """
     Create a list of keys from a dict recursively.
     """
-    for key, value in d.iteritems():
+    for key, value in d.items():
         if isinstance(value, dict):
             keys_in_dict(value, key, keys)
         else:
@@ -319,7 +329,7 @@ def roles_dict(path, repo_prefix="", repo_sub_dir=""):
 
     aggregated_roles = {}
 
-    roles = os.walk(path).next()[1]
+    roles = next(os.walk(path))[1]
 
     # First scan all directories
     for role in roles:
@@ -330,7 +340,7 @@ def roles_dict(path, repo_prefix="", repo_sub_dir=""):
     # Then format them
     for role in roles:
         if is_role(os.path.join(path, role)):
-            if isinstance(role, basestring):
+            if isinstance(role, string_types):
                 role_repo = "{0}{1}".format(repo_prefix, role_name(role))
 
                 aggregated_roles[role] = role_repo

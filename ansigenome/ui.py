@@ -1,5 +1,7 @@
-import color as clr
-import constants as c
+from __future__ import absolute_import, division, print_function
+
+from . import color as clr
+from . import constants as c
 
 
 def log(color, *args):
@@ -12,7 +14,7 @@ def log(color, *args):
         out_color = color
 
     for arg in args:
-        print clr.stringc(arg, out_color)
+        print(clr.stringc(arg, out_color))
 
 
 def ok(*args):
@@ -100,9 +102,9 @@ def role(name, report, role_name_length):
     files = field_value(report["total_files"], "files", "dark gray", 16)
     lines = field_value(report["total_lines"], "lines", "normal", 16)
 
-    print "{0:<{1}} {2} {3} {4} {5}".format(
+    print("{0:<{1}} {2} {3} {4} {5}".format(
         clr.stringc(name, c.LOG_COLOR[report["state"]]),
-        pad_role_name_by, defaults, facts, files, lines)
+        pad_role_name_by, defaults, facts, files, lines))
 
 
 def field_value(key, label, color, padding):
@@ -150,9 +152,9 @@ def totals(report, total_roles, role_name_length):
     files = field_value(report["files"], "files", "dark gray", 16)
     lines = field_value(report["lines"], "lines", "normal", 16)
 
-    print "".join(clr.stringc("-", "black") * 79)
-    print "{0} {2:>{1}} {3} {4} {5}".format(
-        roles, pad_roles_by, defaults, facts, files, lines)
+    print("".join(clr.stringc("-", "black") * 79))
+    print("{0} {2:>{1}} {3} {4} {5}".format(
+        roles, pad_roles_by, defaults, facts, files, lines))
 
 
 def gen_totals(report, file_type):
@@ -171,9 +173,9 @@ def gen_totals(report, file_type):
     #                            "missing meta(s)",
     #                            c.LOG_COLOR["missing_meta"], 16)
 
-    # print "\n{0} {1} {2} {3}".format(ok, skipped, changed, missing_meta)
+    # print("\n{0} {1} {2} {3}".format(ok, skipped, changed, missing_meta))
 
-    print "\n{0} {1} {2} {3}".format(label, ok, skipped, changed)
+    print("\n{0} {1} {2} {3}".format(label, ok, skipped, changed))
 
 
 def scan_totals(report):
@@ -189,4 +191,4 @@ def scan_totals(report):
                                "missing meta(s)",
                                c.LOG_COLOR["missing_meta"], 16)
 
-    print "\n{0} {1} {2}".format(ok, missing_readme, missing_meta)
+    print("\n{0} {1} {2}".format(ok, missing_readme, missing_meta))

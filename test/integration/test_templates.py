@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function
+
 import os
 import unittest
 
@@ -42,9 +44,9 @@ class TestTemplates(unittest.TestCase):
 
         readme = utils.file_to_string(readme_path)
 
-        print
-        print "README compiled template:"
-        print readme
+        print()
+        print("README compiled template:")
+        print(readme)
         print
         self.assertIn("tear.drinker", readme)
         self.assertIn("Chuck Norris", readme)

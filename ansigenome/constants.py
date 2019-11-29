@@ -1,7 +1,8 @@
+from __future__ import absolute_import, division, print_function
 import pkg_resources
 import os.path
 
-import utils
+from . import utils
 
 
 GIT_AUTHOR = utils.capture_shell("git config user.name")[0][:-1]

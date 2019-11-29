@@ -1,11 +1,13 @@
+from __future__ import absolute_import, division, print_function
+
 import os
 import random
 import sys
 import re
 
-import constants as c
-import ui as ui
-import utils as utils
+from . import constants as c
+from . import ui as ui
+from . import utils as utils
 
 
 class Export(object):
@@ -114,7 +116,7 @@ digraph role_dependencies {
         random.shuffle(adjusted_colors)
         backup_colors = adjusted_colors[:]
 
-        for role, fields in sorted(self.report["roles"].iteritems()):
+        for role, fields in sorted(self.report["roles"].items()):
             name = utils.normalize_role(role, self.config)
             color_length = len(adjusted_colors) - 1
 
@@ -158,7 +160,7 @@ digraph role_dependencies {
         if self.out_file:
             utils.string_to_file(self.out_file, graphviz_template)
         else:
-            print graphviz_template
+            print(graphviz_template)
 
     def graph_png(self):
         """
@@ -205,7 +207,7 @@ digraph role_dependencies {
         if self.out_file:
             utils.string_to_file(self.out_file, role_lines)
         else:
-            print role_lines
+            print(role_lines)
 
     def reqs_yml(self):
         """
@@ -253,7 +255,7 @@ digraph role_dependencies {
         if self.out_file:
             utils.string_to_file(self.out_file, role_lines)
         else:
-            print role_lines
+            print(role_lines)
 
     def dump(self):
         """
@@ -263,4 +265,4 @@ digraph role_dependencies {
         if self.out_file:
             utils.string_to_file(self.out_file, report_as_json_string)
         else:
-            print report_as_json_string
+            print(report_as_json_string)

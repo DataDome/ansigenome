@@ -1,10 +1,12 @@
+from __future__ import absolute_import, division, print_function
+
 import re
 import os
 import sys
 
-import constants as c
-import ui as ui
-import utils as utils
+from . import constants as c
+from . import ui as ui
+from . import utils as utils
 
 from ansigenome.export import Export
 
@@ -92,7 +94,7 @@ class Scan(object):
         new_roles = {}
         roles = self.options.limit.split(",")
 
-        for key, value in self.roles.iteritems():
+        for key, value in self.roles.items():
             for role in roles:
                 role = role.strip()
                 if key == role:
@@ -104,7 +106,7 @@ class Scan(object):
         """
         Iterate over each role and report its stats.
         """
-        for key, value in sorted(self.roles.iteritems()):
+        for key, value in sorted(self.roles.items()):
             self.paths["role"] = os.path.join(self.roles_path, key)
             self.paths["tasks"] = os.path.join(self.paths["role"], "tasks",
                                                 "main.yml")
@@ -355,7 +357,7 @@ class Scan(object):
         for file in self.all_files:
             full_path = os.path.join(self.paths["role"], file)
 
-            with open(full_path, "r") as f:
+            with open(full_path, "r", encoding="utf-8", errors="ignore") as f:
                 for line in f:
                     total_lines += 1
 
