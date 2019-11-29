@@ -417,7 +417,7 @@ class Scan(object):
 
         if not os.path.exists(self.paths["ansigenome"]):
             ag_meta_file = c.DEFAULT_AG_FILE
-            ag_meta_file = meta_file.replace("%role_name", role)
+            ag_meta_file = ag_meta_file.replace("%role_name", role)
             utils.string_to_file(self.paths['ansigenome'], ag_meta_file)
 
         # swap values in place to use the config values
