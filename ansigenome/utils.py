@@ -58,6 +58,7 @@ def string_to_file(path, input):
     """
     Write a file from a given string.
     """
+    path = os.path.abspath(path)
     mkdir_p(os.path.dirname(path))
 
     with codecs.open(path, "w+", "UTF-8") as file:

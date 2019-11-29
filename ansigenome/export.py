@@ -126,8 +126,16 @@ digraph role_dependencies {
                 color_length = len(adjusted_colors) - 1
 
             random_index = random.randint(1, color_length)
+
+            role_label = name
+            if self.config.get("options_dot_strip_directory", False):
+                role_label = os.path.basename(role_label)
+            prefix = re.escape(self.config.get("scm_repo_prefix", ""))
+            if self.config.get("options_dot_strip_prefix", False) and prefix:
+                role_label = re.sub(r'(^|/)' + prefix, '', role_label)
+
             roles_list += "        role_{0}              [label = \"{1}\"]\n" \
-                          .format(re.sub(r'[.-/]', '_', name), name)
+                          .format(re.sub(r'[./-]', '_', name), role_label)
 
             edge = '\n        edge [color = "{0}"];\n' \
                    .format(adjusted_colors[random_index])
@@ -139,8 +147,8 @@ digraph role_dependencies {
                 for dependency in sorted(fields["dependencies"]):
                     dependency_name = utils.role_name(dependency)
                     dependencies += "        role_{0} -> role_{1}\n".format(
-                        re.sub(r'[.-/]', '_', name),
-                        re.sub(r'[.-/]', '_',
+                        re.sub(r'[./-]', '_', name),
+                        re.sub(r'[./-]', '_',
                                utils.normalize_role(dependency_name,
                                                     self.config)
                                )
@@ -170,13 +178,15 @@ digraph role_dependencies {
             ui.error(c.MESSAGES["png_missing_out"])
             sys.exit(1)
 
-        cli_flags = "-Gsize='{0}' -Gdpi='{1}' {2} ".format(self.size, self.dpi,
-                                                           self.flags)
-        cli_flags += "-o {0}".format(self.out_file)
+        dot_exe = self.config.get("options_dot_program", "dot")
+        dot_cmd = "{0} -Tpng -Gsize='{1}' -Gdpi='{2}' {3} -o {4}".format(
+            dot_exe, self.size, self.dpi, self.flags, self.out_file)
+        prog_name = sys.argv[0] or "ansigenome"
 
+        print("running", dot_cmd)
         (out, err) = utils.capture_shell(
-            "ansigenome export -t graph -f dot | dot -Tpng {0}"
-            .format(cli_flags))
+            "{0} export -t graph -f dot | {1}"
+            .format(prog_name, dot_cmd))
 
         if err:
             ui.error(err)
