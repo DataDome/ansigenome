@@ -443,7 +443,10 @@ class Scan(object):
         new_meta = self.augment_main_keys(augments, new_meta)
 
         # re-attach the ---
-        new_meta = "---\n\n" + new_meta
+        yaml_prefix = "---\n"
+        if self.config.get("options_yaml_head_newline", True):
+            yaml_prefix += "\n"
+        new_meta = yaml_prefix + new_meta
 
         travis_path = os.path.join(self.paths["role"], ".travis.yml")
         if os.path.exists(travis_path):
